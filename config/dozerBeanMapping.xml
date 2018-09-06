@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<mapping date-format="yyyy-MM-dd">
+		<class-a>com.gstore.action.vo.SearchVO</class-a>
+		<class-b>com.gstore.dao.po.SearchPO</class-b>
+		<field>
+			<a>dfrom</a>
+			<b>dfrom</b>
+		</field>
+		<field>
+			<a>dto</a>
+			<b>dto</b>
+		</field>
+	</mapping>
+	<mapping date-format="yyyy-MM-dd">
+		<class-a>com.gstore.dao.po.Glasses</class-a>
+		<class-b>com.gstore.action.vo.GlassesVO</class-b>
+		<field>
+			<a>glassesName</a>
+			<b>name</b>
+		</field>
+		<field>
+			<a>glassesDesc</a>
+			<b>desc</b>
+		</field>
+		<field>
+			<a>categoryName</a>
+			<b>category</b>
+		</field>
+		<field>
+			<a>hotNumber</a>
+			<b>hot</b>
+		</field>
+		<field>
+			<a>addDate</a>
+			<b>addDate</b>
+		</field>
+	</mapping>
+
+	<mapping date-format="yyyy-MM-dd">
+		<class-a>com.gstore.dao.po.User</class-a>
+		<class-b>com.gstore.action.vo.UserVO</class-b>
+		<field>
+			<a>userName</a>
+			<b>name</b>
+		</field>
+		<field>
+			<a>birth</a>
+			<b>birth</b>
+		</field>
+		<field>
+			<a>regdate</a>
+			<b>regdate</b>
+		</field>
+	</mapping>
+	<mapping date-format="yyyy-MM-dd">
+		<class-a>com.gstore.dao.po.Favorate</class-a>
+		<class-b>com.gstore.action.vo.FavorateVO</class-b>
+		<field>
+			<a>addDate</a>
+			<b>addDate</b>
+		</field>
+	</mapping>
+</mappings>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dwr="http://www.directwebremoting.org/schema/spring-dwr"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd  
+    http://www.springframework.org/schema/context  
+    http://www.springframework.org/schema/context/spring-context-2.5.xsd
+    http://www.springframework.org/schema/aop 
+    http://www.springframework.org/schema/aop/spring-aop-2.5.xsd    
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx-2.5.xsd"
+	default-autowire="byName">
+
+	<!-- Step1. JDBC Properties -->
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:jdbc.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Step2. Message Resource Bundler -->
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename">
+			<value>errors</value>
+		</property>
+	</bean>
+
+	<!-- Step3. Data Source Configuration -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+	</bean>
+
+	<!-- Step4. IBatis Configuration -->
+	<bean id="dao-SqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="configLocation">
+			<value>classpath:sqlMapConfig-dao.xml</value>
+		</property>
+		<property name="dataSource">
+			<ref bean="dataSource"></ref>
+		</property>
+	</bean>
+
+	<bean id="dao-SqlMapClientTemplate" class="org.springframework.orm.ibatis.SqlMapClientTemplate">
+		<property name="sqlMapClient">
+			<ref local="dao-SqlMapClient" />
+		</property>
+	</bean>
+
+	<bean class="com.gstore.common.util.DaoBeanPostProcessor">
+		<property name="sqlMapClientTemplate">
+			<ref local="dao-SqlMapClientTemplate" />
+		</property>
+	</bean>
+
+	<!-- Step5. Transaction Configuration -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="get*" propagation="SUPPORTS" read-only="true"
+				timeout="20" />
+			<tx:method name="create*" />
+			<tx:method name="update*" />
+			<tx:method name="remove*" />
+			<tx:method name="search*" read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+
+	<aop:config>
+		<aop:pointcut id="txServices"
+			expression="execution(* com.gstore.service.I*.*(..))" />
+
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="txServices"
+			order="200" />
+	</aop:config>
+
+	<!-- Step6. Ehcache Configuration -->
+	<bean id="cacheAccessor" class="com.gstore.common.util.CacheAccessor">
+		<property name="cache">
+			<bean class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+				<property name="cacheManager">
+					<bean class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+						<property name="configLocation">
+							<value>classpath:ehcache.xml</value>
+						</property>
+					</bean>
+				</property>
+				<property name="cacheName">
+					<value>BUSINESS_CACHE</value>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+	<!-- Step7. Dozer Configuration -->
+	<bean id="dozerMapper" class="org.dozer.DozerBeanMapper" scope="singleton">
+		<property name="mappingFiles">
+			<list>
+				<value>/dozerBeanMapping.xml</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Step9. Scan And Register Components -->
+	<context:annotation-config />
+	<context:component-scan base-package="com.gstore.action.front" />
+	<context:component-scan base-package="com.gstore.action.admin" />
+	<context:component-scan base-package="com.gstore.action" />
+	<context:component-scan base-package="com.gstore.service" />
+	<context:component-scan base-package="com.gstore.dao" />
+	<aop:aspectj-autoproxy proxy-target-class="false" />
+	
+	<!-- Step10. Define config file -->
+	<bean id="configure" class="org.apache.commons.configuration.PropertiesConfiguration">
+		<constructor-arg>
+			<value>config.properties</value>
+		</constructor-arg>
+	</bean>
+</beans>

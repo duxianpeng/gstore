@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="abstract-default" extends="struts-default"
+		abstract="true">
+		<result-types>
+			<result-type name="freemarker"
+				class="org.apache.struts2.views.freemarker.FreemarkerResult"
+				default="true" />
+		</result-types>
+
+		<interceptors>
+			<interceptor name="login"
+				class="com.gstore.common.interceptor.LoginInterceptor" />
+			<interceptor name="exception"
+				class="com.gstore.common.interceptor.ExceptionInterceptor" />
+
+			<interceptor-stack name="gstoreDefaultStack">
+				<interceptor-ref name="defaultStack" />
+				<interceptor-ref name="login" />
+				<interceptor-ref name="exception" />
+			</interceptor-stack>
+
+			<interceptor-stack name="gstoreSubmitStack">
+				<interceptor-ref name="defaultStack" />
+				<interceptor-ref name="login" />
+				<interceptor-ref name="token-session" />
+				<interceptor-ref name="exception" />
+			</interceptor-stack>
+		</interceptors>
+
+		<default-interceptor-ref name="gstoreDefaultStack" />
+
+	</package>
+	<package name="gstore-default" extends="abstract-default">
+		<default-action-ref name="defaultAction" />
+		<global-results>
+			<result name="success">/WEB-INF/ftl/common/success.ftl</result>
+			<result name="exception">/WEB-INF/ftl/common/error.ftl</result>
+			<result name="error">/WEB-INF/ftl/common/error.ftl</result>
+			<result name="invalid.token">/WEB-INF/ftl/common/error.ftl</result>
+			<result name="login">/WEB-INF/ftl/front/login.ftl</result>
+			<result name="home" type="redirect-action">
+				<param name="namespace">/front</param>
+				<param name="actionName">home</param>
+			</result>
+			<result name="fronthome" type="redirect-action">
+				<param name="namespace">/front</param>
+				<param name="actionName">home</param>
+			</result>
+			<result name="adminhome" type="redirect-action">
+				<param name="namespace">/admin</param>
+				<param name="actionName">home</param>
+			</result>
+		</global-results>
+
+		<action name="defaultAction">
+			<result type="redirect-action">
+				<param name="namespace">/front</param>
+				<param name="actionName">home</param>
+			</result>
+		</action>
+	</package>
+	<include file="front-management.xml" />
+	<include file="admin-management.xml" />
+</struts>

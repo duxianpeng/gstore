@@ -1,0 +1,33 @@
+<!DOCTYPE validators PUBLIC "-//OpenSymphony Group//XWork Validator 1.0.2//EN" "http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
+
+<validators>
+	<field name="param.pfrom">
+		<field-validator type="int">
+			<param name="min">0</param>
+			<param name="max">10000</param>
+			<message>价格必须在0-10000之间</message>
+		</field-validator>
+	</field>
+	<field name="param.pto">
+		<field-validator type="int">
+			<param name="min">0</param>
+			<param name="max">10000</param>
+			<message>价格必须在0-10000之间</message>
+		</field-validator>
+	</field>
+	<field name="param.dfrom">
+		<field-validator type="regex">
+			<param name="expression"><![CDATA[(([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8]))))|((([0-9]{2})(0[48]|[2468][048]|[13579][26])|((0[48]|[2468][048]|[3579][26])00))-02-29)]]>
+			</param>
+			<message>日期格式不正确！</message>
+		</field-validator>
+	</field>
+	<field name="param.dto">
+		<field-validator type="regex">
+			<param name="expression"><![CDATA[(([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8]))))|((([0-9]{2})(0[48]|[2468][048]|[13579][26])|((0[48]|[2468][048]|[3579][26])00))-02-29)]]>
+			</param>
+			<message>日期格式不正确！</message>
+		</field-validator>
+	</field>
+
+</validators>

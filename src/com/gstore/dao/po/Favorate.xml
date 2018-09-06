@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Favorate">
+	<typeAlias alias="Favorate" type="com.gstore.dao.po.Favorate" />
+	<typeAlias alias="SearchPO" type="com.gstore.dao.po.SearchPO" />
+	<sql id="searchCondition">
+		<dynamic prepend="WHERE">
+			<isNotEmpty property="glassesId">
+				f.glasses_id=#glassesId#
+			</isNotEmpty>
+			<isNotEmpty property="userId">
+				f.user_id=#userId#
+			</isNotEmpty>
+		</dynamic>
+	</sql>
+
+	<select id="selectFavorates" resultClass="Favorate"
+		parameterClass="SearchPO">
+		SELECT
+		f.id id,
+		f.user_id userId,
+		f.user_name userName,
+		f.glasses_id
+		glassesId,
+		f.picture,
+		f.glasses_name glassesName,
+		f.comments comments,
+		f.star_value
+		starValue,
+		f.add_date addDate
+		FROM
+		v_favorates f
+		<include refid="searchCondition" />
+		ORDER BY f.add_date DESC
+	</select>
+	
+	<select id="selectCart" resultClass="Favorate"
+		parameterClass="SearchPO">
+		SELECT
+		f.id id,
+		f.user_id userId,
+		f.glasses_id
+		glassesId
+		FROM
+		favorates f
+		where
+				f.glasses_id=#glassesId#
+	       and
+				f.user_id=#userId# 
+	</select>
+	
+	<select id="selectTotal" parameterClass="SearchPO" resultClass="int">
+		SELECT
+		count(f.id)
+		FROM
+		v_favorates f
+		<include refid="searchCondition" />
+	</select>
+	<update id="deleteFavorates" parameterClass="map">
+		DELETE FROM favorates
+		<dynamic prepend="WHERE">
+			<iterate prepend="AND" property="gIds" open="(" close=")"
+				conjunction="OR">
+				glasses_id=$gIds[]$
+	        </iterate>
+			<isNotEmpty prepend="AND" property="userId">
+				user_id=#userId#
+			</isNotEmpty>
+		</dynamic>
+	</update>
+
+	<update id="updateFavorate" parameterClass="Favorate">
+		update favorates set comments=#comments#,
+		add_date=#addDate#,
+		star_value=#starValue#
+			where
+				glasses_id=#glassesId#
+	       and
+				user_id=#userId#
+   </update>
+    
+    <insert id="insertFavorate" parameterClass="Favorate">
+		INSERT INTO favorates
+		(
+		user_id ,
+		glasses_id,
+		comments,
+		add_date,
+		star_value
+		) VALUES
+		(
+		#userId#,
+		#glassesId#,
+		#comments#,
+		#addDate#,
+		#starValue#
+		)
+    </insert>
+    
+    <update id="deleteGlassesIds" parameterClass="Integer">
+		DELETE FROM favorates
+		where glasses_id=#id#
+	</update>
+</sqlMap>

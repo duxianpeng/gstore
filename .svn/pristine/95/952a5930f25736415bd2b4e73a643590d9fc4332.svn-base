@@ -1,0 +1,21 @@
+# This is the configuring for logging displayed in the Application Server
+log4j.rootCategory=INFO, stdout, logfile
+
+#stdout configure
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+log4j.appender.stdout.layout.ConversionPattern=%d{HH:mm:ss} [%c] %n%p: <%m>%n
+
+#logfile configure
+log4j.appender.logfile=org.apache.log4j.DailyRollingFileAppender
+log4j.appender.logfile.File=../logs/gstore.log
+log4j.appender.logfile.layout=org.apache.log4j.PatternLayout
+log4j.appender.logfile.layout.ConversionPattern= %d %p [%c] - <%m>%n
+
+# Changing the log level to DEBUG when development, changing the log level to INFO when production.
+# Control logging for project packages
+log4j.logger.com.gstore=DEBUG
+log4j.logger.com.gstore.common.interceptor=INFO
+log4j.logger.java.sql=DEBUG
+# Control logging for other open source packages
+log4j.logger.org.springframework=WARN

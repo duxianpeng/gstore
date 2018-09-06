@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="User">
+	<typeAlias alias="User" type="com.gstore.dao.po.User" />
+
+	<select id="selectUsers" resultClass="User">
+		SELECT
+		id id,
+		user_name
+		userName,
+		pwd pwd,
+		isAdmin isAdmin,
+		email email,
+		gender gender,
+		birth
+		birth,
+		phone phone,
+		regdate regdate
+		FROM
+		users
+		ORDER BY regdate DESC
+	</select>
+
+	<select id="selectUser" resultClass="User">
+		SELECT
+		id id,
+		user_name
+		userName,
+		pwd pwd,
+		isAdmin isAdmin,
+		email email,
+		gender gender,
+		birth
+		birth,
+		phone phone,
+		regdate regdate
+		FROM
+		users
+		WHERE
+		id=#id#
+    </select>
+    
+	<select id="selectTotal" resultClass="int">
+		SELECT
+		count(id)
+		FROM
+		users
+	</select>
+
+	<select id="checkUser" parameterClass="map" resultClass="User">
+		SELECT
+		id id,
+		user_name
+		userName,
+		pwd pwd,
+		isAdmin isAdmin,
+		email email,
+		gender
+		gender,
+		birth
+		birth,
+		phone phone,
+		regdate regdate
+		FROM
+		users
+		WHERE
+		UPPER(TRIM(email))=UPPER(TRIM(#email#))
+		AND
+		UPPER(TRIM(pwd))=UPPER(TRIM(#pwd#))
+    </select>
+
+	<insert id="insertUser" parameterClass="User">
+		INSERT INTO users (
+		user_name ,
+		pwd ,
+		isAdmin ,
+		email ,
+		gender ,
+		birth ,
+		phone ,
+		regdate
+		) VALUES
+		(
+		#userName#,
+		#pwd#,
+		#isAdmin#,
+		#email#,
+		#gender#,
+		#birth#,
+		#phone#,
+		#regdate#
+		)
+    </insert>
+
+	<update id="deleteUsers" parameterClass="map">
+		DELETE FROM users
+		WHERE
+		<iterate prepend="" property="ids" open="(" close=")"
+			conjunction="OR">
+			id=$ids[]$
+        </iterate>
+
+	</update>
+
+	<update id="deleteUser" parameterClass="int">
+		DELETE FROM users
+		WHERE
+		id=#id#
+
+	</update>
+
+	<update id="updateUser" parameterClass="User">
+		UPDATE
+		users
+		SET
+		user_name =
+		#userName#,
+		pwd = #pwd#,
+		isAdmin = #isAdmin#,
+		email = #email#,
+		gender =
+		#gender#,
+		birth = #birth#,
+		phone = #phone#
+		WHERE
+		id =
+		#id#
+    </update>
+</sqlMap>

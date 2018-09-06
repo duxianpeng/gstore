@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+	<package name="front" extends="gstore-default" namespace="/front">
+
+		<action name="home" class="com.gstore.action.front.HomeAction">
+			<result>/WEB-INF/ftl/front/home.ftl</result>
+		</action>
+		<action name="goLogin" class="com.gstore.common.action.AnonymousAction">
+			<result>/WEB-INF/ftl/front/login.ftl</result>
+		</action>
+		<action name="login" class="com.gstore.action.front.LoginAction"
+			method="login">
+			<result name="adminhome" type="redirect-action">
+				<param name="namespace">/admin</param>
+				<param name="actionName">home</param>
+			</result>
+			<result name="fronthome" type="redirect-action">
+				<param name="namespace">/front</param>
+				<param name="actionName">home</param>
+			</result>
+			<result type="redirect">${indexUrl}</result>
+			<result name="input">/WEB-INF/ftl/front/login.ftl</result>
+		</action>
+		<action name="logout" class="com.gstore.action.front.LoginAction"
+			method="logout">
+			<result>/WEB-INF/ftl/front/login.ftl</result>
+		</action>
+
+		<action name="goCreateAccount" class="com.gstore.common.action.AnonymousAction">
+			<result>/WEB-INF/ftl/front/createAccount.ftl</result>
+		</action>
+		<action name="createAccount" class="com.gstore.action.front.CreateAccountAction">
+			<result name="input">/WEB-INF/ftl/front/createAccount.ftl</result>
+		</action>
+		<action name="viewAccount" class="com.gstore.action.front.ViewAccountAction">
+			<result>/WEB-INF/ftl/front/viewaccount.ftl</result>
+		</action>
+		<action name="goUpdateAccount" class="com.gstore.common.action.AnonymousAction">
+			<result>/WEB-INF/ftl/front/updateAccount.ftl</result>
+		</action>
+		<action name="updateAccount" class="com.gstore.action.front.UpdateAccountAction">
+			<result name="input">/WEB-INF/ftl/front/updateAccount.ftl</result>
+		</action>
+		<action name="detail" class="com.gstore.action.front.DetailAction">
+			<result>/WEB-INF/ftl/front/detail.ftl</result>
+		</action>
+		<action name="goSearch" class="com.gstore.common.action.AnonymousAction">
+			<result>/WEB-INF/ftl/front/search.ftl</result>
+		</action>
+		<action name="searchGlasses" class="com.gstore.action.front.SearchGlassesAction"
+			method="searchGlasses">
+			<result>/WEB-INF/ftl/front/glasses.ftl</result>
+			<result name="input">/WEB-INF/ftl/front/search.ftl</result>
+		</action>
+		<action name="searchNewGlasses" class="com.gstore.action.front.SearchGlassesAction"
+			method="searchNewGlasses">
+			<result>/WEB-INF/ftl/front/glasses.ftl</result>
+		</action>
+		<action name="searchHotGlasses" class="com.gstore.action.front.SearchGlassesAction"
+			method="searchHotGlasses">
+			<result>/WEB-INF/ftl/front/glasses.ftl</result>
+		</action>
+		<action name="favorates" class="com.gstore.action.front.FavoratesAction">
+			<result>/WEB-INF/ftl/front/favorates.ftl</result>
+		</action>
+
+		<action name="cart" class="com.gstore.action.front.CartAction">
+			<result>/WEB-INF/ftl/front/cart.ftl</result>
+		</action>
+
+		<action name="updateCart" class="com.gstore.action.front.UpdateCartAction">
+			<result type="redirect-action">
+				<param name="namespace">/front</param>
+				<param name="actionName">cart</param>
+			</result>
+		</action>
+		<action name="addComment" class="com.gstore.action.front.AddCommentAction">
+			<result>/WEB-INF/ftl/front/comment.ftl</result>
+		</action>
+		<action name="addCart" class="com.gstore.action.front.AddCartAction">
+			<result type="redirect-action">
+				<param name="namespace">/front</param>
+				<param name="actionName">cart</param>
+			</result>
+		</action>
+		<action name="about" class="com.gstore.common.action.AnonymousAction">
+			<result>/WEB-INF/ftl/front/about.ftl</result>
+		</action>
+		<action name="download" class="com.gstore.action.front.DownloadAction">
+			<result type="stream">
+				<param name="contentType">image/jpeg</param>
+				<param name="contentDisposition">
+					attachment;fileName="${picture}"
+                </param>
+				<param name="inputName">downloadFile</param>
+			</result>
+
+		</action>
+	</package>
+</struts>

@@ -1,0 +1,71 @@
+<!DOCTYPE validators PUBLIC "-//OpenSymphony Group//XWork Validator 1.0.2//EN" "http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
+
+<validators>
+	<field name="name">
+		<field-validator type="requiredstring">
+			<param name="trim">true</param>
+			<message>用户名不能为空。</message>
+		</field-validator>
+
+		<field-validator type="stringlength">
+			<param name="minLength">1</param>
+			<param name="maxLength">50</param>
+			<message>用户名长度不能超过50个字符。</message>
+		</field-validator>
+	</field>
+
+	<field name="pwd">
+		<field-validator type="requiredstring">
+			<param name="trim">true</param>
+			<message>密码不能为空。</message>
+		</field-validator>
+
+		<field-validator type="stringlength">
+			<param name="minLength">6</param>
+			<param name="maxLength">50</param>
+			<message>密码长度应在6到50个字符之间。</message>
+		</field-validator>
+
+		<field-validator type="fieldexpression">
+			<param name="expression">pwd.equals(confirmPwd)</param>
+			<message>密码不一致，请重新输入。</message>
+		</field-validator>
+	</field>
+
+	<field name="phone">
+		<field-validator type="requiredstring">
+			<param name="trim">true</param>
+			<message>电话不能为空。</message>
+		</field-validator>
+
+		<field-validator type="stringlength">
+			<param name="minLength">7</param>
+			<param name="maxLength">11</param>
+			<message>电话号码应在7到11个字符之间。</message>
+		</field-validator>
+	</field>
+	<field name="gender">
+		<field-validator type="int">
+			<param name="min">0</param>
+			<param name="max">1</param>
+			<message>请选择性别。</message>
+		</field-validator>
+	</field>
+	<field name="email">
+		<field-validator type="requiredstring">
+			<message key="eMail不能为空。" />
+		</field-validator>
+		<field-validator type="email">
+			<message key="eMail格式不正确。" />
+		</field-validator>
+	</field>
+
+	<field name="birth">
+		<field-validator type="regex">
+			<param name="expression"><![CDATA[(([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8]))))|((([0-9]{2})(0[48]|[2468][048]|[13579][26])|((0[48]|[2468][048]|[3579][26])00))-02-29)]]>
+			</param>
+			<message>日期格式不正确！</message>
+		</field-validator>
+	</field>
+
+</validators>

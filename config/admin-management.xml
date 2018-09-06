@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+	<package name="admin" extends="gstore-default" namespace="/admin">
+		<action name="home" class="com.gstore.common.action.BaseAction">
+			<result>/WEB-INF/ftl/admin/home.ftl</result>
+		</action>
+
+		<action name="userList" class="com.gstore.action.admin.UserListAction">
+			<result>/WEB-INF/ftl/admin/userList.ftl</result>
+		</action>
+
+		<action name="userInfo" class="com.gstore.action.admin.UserInfoAction">
+			<result>/WEB-INF/ftl/admin/userInfo.ftl</result>
+		</action>
+
+		<action name="userEditView" class="com.gstore.action.admin.UserEditViewAction">
+			<result>/WEB-INF/ftl/admin/userEdit.ftl</result>
+		</action>
+
+		<action name="update" class="com.gstore.action.admin.UserUpdateAction">
+			<result type="redirect-action">
+				<param name="namespace">/admin</param>
+				<param name="actionName">userList</param>
+			</result>
+		</action>
+
+		<action name="userAddView" class="com.gstore.action.admin.UserAddViewAction">
+			<result name="viewAdd">/WEB-INF/ftl/admin/userAdd.ftl</result>
+		</action>
+
+		<action name="userAdd" class="com.gstore.action.admin.UserAddAction">
+			<result type="redirect-action">
+				<param name="namespace">/admin</param>
+				<param name="actionName">userList</param>
+			</result>
+		</action>
+
+		<action name="userDelete" class="com.gstore.action.admin.UserDeleteAction">
+			<result type="redirect-action">
+				<param name="namespace">/admin</param>
+				<param name="actionName">userList</param>
+			</result>
+		</action>
+
+		<action name="goSearch" class="com.gstore.common.action.BaseAction">
+			<result>/WEB-INF/ftl/admin/search.ftl</result>
+		</action>
+		
+		<action name="searchGlasses" class="com.gstore.action.admin.SearchGlassesAction">
+			<result>/WEB-INF/ftl/admin/glasses.ftl</result>
+			<result name="input">/WEB-INF/ftl/admin/search.ftl</result>
+		</action>
+		
+		<action name="detail" class="com.gstore.action.admin.DetailAction">
+			<result>/WEB-INF/ftl/admin/detail.ftl</result>
+		</action>
+		
+		<action name="goCreateGlasses" class="com.gstore.common.action.BaseAction">
+			<result>/WEB-INF/ftl/admin/glassesCreate.ftl</result>
+		</action>
+		
+		<action name="createGlasses" class="com.gstore.action.admin.CreateGlassesAction">
+			<result type="redirect-action">
+				<param name="namespace">/admin</param>
+				<param name="actionName">searchGlasses</param>
+			</result>
+			<result name="input">/WEB-INF/ftl/admin/createGlasses.ftl</result>
+		</action>
+		
+		<action name="goUpdateGlasses" class="com.gstore.action.admin.DetailAction">
+			<result>/WEB-INF/ftl/admin/glassesUpdate.ftl</result>
+		</action>
+		
+		<action name="updateGlasses" class="com.gstore.action.admin.UpdateGlassesAction">
+			<result>/WEB-INF/ftl/admin/search.ftl</result>
+			<result name="input">/WEB-INF/ftl/admin/glassesUpdate.ftl</result>
+		</action>
+		
+		<action name="deleteGlasses" class="com.gstore.action.admin.DeleteGlassesAction">
+			<result type="redirect-action">
+				<param name="namespace">/admin</param>
+				<param name="actionName">searchGlasses</param>
+			</result>
+		</action>
+		
+	</package>
+</struts>

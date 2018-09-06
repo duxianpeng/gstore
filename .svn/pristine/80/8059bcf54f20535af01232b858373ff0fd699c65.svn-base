@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Glasses">
+	<typeAlias alias="Glasses" type="com.gstore.dao.po.Glasses" />
+	<typeAlias alias="SearchPO" type="com.gstore.dao.po.SearchPO" />
+
+	<select id="selectDetail" resultClass="Glasses">
+		SELECT
+		id id,
+		glasses_name
+		glassesName,
+		glasses_desc glassesDesc,
+		category_name categoryName,
+		picture picture,
+		price price,
+		hot_number
+		hotNumber,
+		anti_ultraviolet
+		antiUltraviolet,
+		add_date addDate,
+		anti_uvb antiUVB,
+		material material,
+		face face,
+		human human,
+		intro intro
+		FROM
+		v_glasses
+		WHERE
+		id=#id#
+	</select>
+
+	<sql id="searchCondition">
+		<dynamic prepend="WHERE">
+			<isNotEmpty prepend="AND" property="categoryId">
+				category_id
+				=#categoryId#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="isSearchInDesc">
+				UPPER(glasses_desc)
+				LIKE '%$desc$%'
+			</isNotEmpty>
+			<isEmpty prepend="AND" property="isSearchInDesc">
+				UPPER(glasses_name)
+				LIKE
+				'%$desc$%'
+			</isEmpty>
+			<isNotEmpty prepend="AND" property="pfrom">
+				price <![CDATA[ >= ]]>
+				#pfrom#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="pto">
+				price <![CDATA[ <= ]]>
+				#pto#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="dfrom">
+				add_date <![CDATA[ >= ]]>
+				#dfrom#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="dto">
+				add_date <![CDATA[ <= ]]>
+				#dto#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="userId">
+				id in (select
+				f.glasses_id from favorates f where f.user_id = #userId#)
+			</isNotEmpty>
+		</dynamic>
+	</sql>
+
+	<select id="selectGlasses" parameterClass="SearchPO"
+		resultClass="Glasses">
+		SELECT
+		id id,
+		glasses_name glassesName,
+		glasses_desc glassesDesc,
+		category_name categoryName,
+		picture picture,
+		price price,
+		hot_number
+		hotNumber,
+		anti_ultraviolet antiUltraviolet,
+		add_date addDate,
+		anti_uvb
+		antiUVB,
+		material material,
+		face face,
+		human human,
+		intro
+		intro
+		FROM
+		v_glasses
+		<include refid="searchCondition" />
+		ORDER BY $order$ DESC
+	</select>
+
+	<select id="selectTotal" parameterClass="SearchPO" resultClass="int">
+		SELECT
+		count(id)
+		FROM
+		v_glasses
+		<include refid="searchCondition" />
+	</select>
+
+	<insert id="insertGlasses" parameterClass="Glasses">
+		INSERT INTO glasses (
+		glasses_name,
+		intro,
+		glasses_desc,
+		category_id,
+		picture,
+		price,
+		anti_ultraviolet,
+		add_date,
+		anti_uvb,
+		material,
+		face,
+		human
+		) VALUES
+		(
+		#glassesName#,
+		#intro#,
+		#glassesDesc#,
+		#categoryId#,
+		#picture#,
+		#price#,
+		#antiUltraviolet#,
+		#addDate#,
+		#antiUVB#,
+		#material#,
+		#face#,
+		#human#
+		)
+	</insert>
+
+	<update id="deleteGlasses" parameterClass="int">
+		DELETE FROM glasses
+		WHERE
+		id=#id#
+
+	</update>
+
+	<update id="updateGlasses" parameterClass="Glasses">
+		UPDATE
+		glasses
+		SET
+		glasses_name =
+		#glassesName#,
+		intro = #intro#,
+		glasses_desc =
+		#glassesDesc#,
+		picture =
+		#picture#,
+		price =
+		#price#,
+		anti_ultraviolet =
+		#antiUltraviolet#,
+		anti_uvb=#antiUVB#,
+		material=#material#,
+		face=#face#,
+		human=#human#
+		WHERE
+		id =
+		#id#
+    </update>
+    <update id="updateHotUp" parameterClass="Integer">
+		UPDATE
+		glasses
+		set hot_number=hot_number+1
+		WHERE
+		id =
+		#id#
+    </update>
+   	<update id="updateHotDown" parameterClass="map">
+		update 
+		glasses
+		set hot_number=hot_number-1
+		<dynamic prepend="WHERE">
+			<iterate prepend="AND" property="gIds" open="(" close=")"
+				conjunction="OR">
+				id=$gIds[]$
+	        </iterate>
+		</dynamic>
+	</update>
+</sqlMap>
